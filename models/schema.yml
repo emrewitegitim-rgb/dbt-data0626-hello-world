@@ -1,0 +1,38 @@
+
+version: 2
+
+sources:
+    - name: raw
+      schema: raw_gz_data
+      description: "Raw data from our greenweez company"
+      tables:
+        - name: sales
+          identifier: raw_gz_sales     # The identifier name of the table
+          description: "each product in an order placed"
+          columns:
+            - name: date_date
+              description: "date of the order placed"
+              tests:       # Apply data quality tests directly to raw data
+                - not_null
+            - name: orders_id
+              description: "unique id of the order"
+              tests:
+                - not_null
+          tests:
+            - unique:
+                column_name: "orders_id || '-' || pdt_id"
+        - name: products
+          identifier: raw_gz_product     # The identifier name of the table
+          description: "One row for product"
+          columns:
+            - name: products_id
+              description: "unique id of the product"
+              tests:
+                - unique
+                - not_null
+            - name: purchSE_PRICE
+              description: "price of th eproduct"
+              tests:
+                - not_null
+        
+                
